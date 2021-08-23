@@ -1,0 +1,133 @@
+TITLE: API TEST Reference
+Developer: Khaleel Adedeji
+
+The Api Test accepts form-encoded request bodies, uses standard HTTP response codes, authentication and HTTP verbs.
+ 
+Authentication
+Authentication to the Api is done using the JWT (JSON Web Token) 
+which is a proposed Internet standard for creating data with optional signature and/or optional encryption whose payload holds JSON that asserts some number of claims. 
+The tokens are signed either using a private secret or a public/private key. 
+
+Errors
+The API uses HTTP response codes to indicate the success or failure of a request.
+
+HTTP STATUS CODES
+200 - OK		Everything worked as expected.
+400 - Bad Request	The request was unacceptable, often due to missing a required parameter.
+401 - Unauthorized	No valid API key provided.
+404 - Not Found		The requested resource doesn't exist.
+
+
+HTTP METHODS/VERBS
+GET		The GET method requests a representation of the specified resource. Requests using GET should only retrieve data.
+POST		The POST method is used to submit an entity to the specified resource, often causing a change in state or side effects on the server.
+PUT		The PUT method replaces all current representations of the target resource with the request payload.
+DELETE		The DELETE method deletes the specified resource.
+
+
+1. User View
+url: http://127.0.0.1:8000/api/user
+method: GET
+body: It publish all the user on the DB(Database).
+
+2. User Creation
+
+Note: http://127.0.0.1:8000/.. is my url on the wampserver, kindly change to the url given by your server host.
+
+
+url: http://127.0.0.1:8000/api/user
+method: POST (params)
+body:   'name',
+        'email',
+        'age',
+        'sex',
+        'role',
+        'phone_no',
+        'password',
+NOTE: Validator applies to the name (minimum of three characters) and phone number (it must not be more or less than 11 characters).
+If it validates, it will echo the user field. If not, it echoes error message.
+
+3. Get User By ID
+
+url: http://127.0.0.1:8000/api/user/{id}
+method: GET
+body: It publishes the user credentials using the user ID.
+
+4. User Update
+
+url: http://127.0.0.1:8000/api/user/{id}
+method: PUT
+body: Dependant on the parameters that is to be updated/edited.
+      Once the update is done using the user ID, the updated User credentials will be updated. 
+
+5. Delete User
+
+url: http://127.0.0.1:8000/api/user/{id}
+method: DELETE
+body: The User Credentials get deleted in respect to the ID targeted.
+
+
+6. Login
+
+url: http://127.0.0.1:8000/api/auth/login
+method: POST
+body: fields (email and password) - If succefully logged in, a token will be generated.
+	If the email and passowrd doesnt match, Unathorized error would be sent.
+
+7. Me
+
+url: http://127.0.0.1:8000/api/auth/me 
+method: POST
+body: To confirm the user has been successfully logged in, the token generated can be filled in to the Header section ('authentication' as the key with value of 'bearer (token)').
+      if it is the user, the user credentials will be displayed.
+	
+8. Refresh
+
+url: http://127.0.0.1:8000/api/auth/refresh
+method: POST
+body: the user credentials get refreshed.
+
+9. Logout 
+
+url: http://127.0.0.1:8000/api/auth/logout
+method: POST
+body: Successfully logged out message will be sent.
+
+10. Register
+
+url: http://127.0.0.1:8000/api/auth/register
+method: POST (body)
+body: 'name',
+        'email',
+        'age',
+        'sex',
+        'role',
+        'phone_no',
+        'password',
+	'password_again',
+N.B: Series of Validation applies to all the parameters.
+	i. Name, email and phone number must be more thn 3, 6, 10 credentials respectively.
+ 	ii. Email and Phone number must not be owned by another user, hence (error, phone number or/and email has already been taken).
+	iii. None of the fields must be empty, hence, error message will be received.
+	iv. if all is validated, the user would be logged in authomatically, hence, a token would be generated.  
+	v. Password_again field is provided and not in the database just to allow user to make sure they are submitting the right and desired password.
+
+11. Reset Password
+
+url: http://127.0.0.1:8000/api/auth/resetPassword
+method: POST
+body: password
+
+N.B: Token must be set to confirm login through (me)route and once the user is logged in, the password can be changed. it would return Password reset successfully.
+
+
+Versioning
+
+ php: "^7.3|^8.0",
+ fruitcake/laravel-cors: "^2.0",
+ laravel/framework: "^8.54",
+ laravel/tinker: "^2.5",
+ tymon/jwt-auth: "^1.0",
+ 
+
+Thanks, would be glad to hear positive feedbacks
